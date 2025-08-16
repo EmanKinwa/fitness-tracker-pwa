@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fitness Tracker v0.1</title>
+  <link rel="stylesheet" href="style.css">
+  <!-- PWA manifest and Apple touch icon for iOS installation -->
+  <link rel="manifest" href="manifest.json">
+  <link rel="apple-touch-icon" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAADqklEQVR4nO3dwW3jVhRAUdpIBbNMDa7BFWThirKYOlLGLFNTasjCA8XR0JSsS5Gf0DlLGTYf/78gLUgAn15e3ya41fPeA3BsAiIREImASAREIiASAZEIiERAJAIiERCJgEgERCIgEgGRCIhEQCQCIhEQiYBIBEQiIBIBkQiIREAkAiIREImASAREIiASAZEIiERAJAIiERCJgEgERCIgEgGRCIhEQCQCIhEQiYBIBEQiIBIBkQiIREAkAiIREImASAREIiASAZEIiERAJAIiERCJgEgERCIgEgGRCIhEQCQCIvltrT/0z59/LPz02/cfax2IKy3vyLTSpjy9vL7d/MsXR5wlpvu5bUemsCm3BHTzlGeUtKJVNuWGHflaQGul85GMotU35Us78oWA7lHPOw3d5n47Ml29KVcFdNdBT2R0vW12ZLpiUy6/jd9s1s0OdHRbLtTFY10IaONN1dBF2y/R8hGXAtplOzW0YK/FWTjupwHtuJEamrXvsnx29PmAdt/C3QcYzQgLMjvDTEAjzDoNM8YIxlmKXyc5D2icWafBhtnLaItwNo9P40n+F9BosU9DjrSlMU//41TPs68OZdjB7m3kEz/N5hZG8jOgkWOfhh/vHsY/5fcJXYFIBETy9PL6Nv7V8t3jfN/jKDsyrfil+g0caFkfh1sYiYBInn7/+6+9Z+DAXIFIBEQiIBIBkQiIREAkAiIREImASJ4f5yNu7sEViERAJEf6PtDj3G0P9M2n5+kgG3OIIddylJP99v2HWxiJgEh+BjT4NXPw8e5h/FN+n9AViOS/gIZNftjB7m3kEz/N9jz76jgGHGlLY57+x6ncwkjOAxoq+aGG2ctoi3A2z8wVaJCJBxljBOMsxa+TzN/Cdp949wFGM8KCzM7w6f9AO048wmINaN9l+ezoS/9E7zKxehbstTgLx73wLmzjidVz0fZLtHzEy2/jN5tYPVfacqEuHssD5w7sMA+cO/HIywEd5pGXJx66O6BjPHT3jMd+j+YYj/2etTy6aLZ3MaZVNmW1gHhMPo0nERCJgEgERCIgEgGRCIhEQCQCIhEQiYBIBEQiIBIBkQiIREAkAiIREImASAREIiASAZEIiERAJAIiERCJgEgERCIgEgGRCIhEQCQCIhEQiYBIBEQiIBIBkQiIREAkAiIREImASAREIiASAZEIiERAJAIiERCJgEgERCIgEgGRCIhEQCQCIhEQiYBIBEQiIBIBkQiIREAkAiIREMm/wNzWNZZhLywAAAAASUVORK5CYII=">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+</head>
+<body>
+  <header>
+    <h1>Fitness Tracker v0.1</h1>
+  </header>
+  <nav id="nav">
+    <button data-tab="plan" class="active">Plan</button>
+    <button data-tab="workout">Workout Log</button>
+    <button data-tab="diet">Diet Log</button>
+    <button data-tab="renpho">Renpho Log</button>
+    <button data-tab="sleep">Sleep Log</button>
+    <button data-tab="summary">Summary</button>
+  </nav>
+
+  <!-- Content containers for each tab -->
+  <main>
+    <section id="plan" class="tab-content active"></section>
+    <section id="workout" class="tab-content"></section>
+    <section id="diet" class="tab-content"></section>
+    <section id="renpho" class="tab-content"></section>
+    <section id="sleep" class="tab-content"></section>
+    <section id="summary" class="tab-content"></section>
+  </main>
+
+  <footer>
+    <p>Data stored locally on your device. You can clear data from your browser settings.</p>
+  </footer>
+
+  <script src="script.js"></script>
+  <script>
+    // Register the service worker for offline capability if supported
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('service_worker.js').catch(err => {
+        console.error('Service worker registration failed:', err);
+      });
+    }
+  </script>
+</body>
+</html>
