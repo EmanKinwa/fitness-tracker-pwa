@@ -29,6 +29,54 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
 
+  // Request notification permission and schedule a daily reminder at 9AM local time.
+  // This uses the Notification API together with the service worker to trigger
+  // a browser notification reminding the user to review the day’s workout plan,
+  // log training and meals, and update Renpho stats. Only runs if the
+  // environment supports notifications and service workers.
+  if ('Notification' in window && 'serviceWorker' in navigator) {
+    Notification.requestPermission().then(permission => {
+      if (permission === 'granted') {
+        // Ensure the service worker is ready before scheduling the reminder.
+        navigator.serviceWorker.ready.then(() => {
+          scheduleDailyReminder();
+        });
+      }
+    });
+  }
+
+  /**
+   * Schedule a local notification at the next occurrence of 9:00 AM
+   * (according to the user’s local time zone). Once the notification
+   * fires, it reschedules itself for the next day so the reminder
+   * repeats indefinitely. Uses setTimeout instead of setInterval to
+   * compute the correct delay each day.
+   */
+  function scheduleDailyReminder() {
+    const now = new Date();
+    const target = new Date();
+    // Set target to 9:00:00.000 today.
+    target.setHours(9, 0, 0, 0);
+    // If 9AM has already passed today, roll to the next day.
+    if (target <= now) {
+      target.setDate(target.getDate() + 1);
+    }
+    const timeout = target.getTime() - now.getTime();
+    setTimeout(() => {
+      navigator.serviceWorker.getRegistration().then(reg => {
+        if (reg && reg.showNotification) {
+          reg.showNotification('Daily Fitness Reminder', {
+            body: 'Check your workout plan, log your workout and meals, and update your Renpho stats.',
+            // Notification icon intentionally omitted; the browser will choose a default icon.
+            tag: 'daily-fitness-reminder'
+          });
+        }
+        // Schedule the next day’s reminder.
+        scheduleDailyReminder();
+      });
+    }, timeout);
+  }
+
   // Data definitions
   const startDateStr = '2025-08-16';
   const startDate = new Date(startDateStr + 'T00:00:00');
@@ -91,10 +139,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   ];
 
-  // Build full 10-week schedule (70 days)
+  // Build full workout schedule.  By default we generate a full year (365 days),
+  // but you can increase `scheduleDays` for longer programs.  Each day is
+  // assigned a training pattern from `weeklyPatterns` based on its index.
+  const scheduleDays = 365; // number of days to generate (approx one year)
   function buildSchedule() {
     const schedule = [];
-    for (let i = 0; i < 70; i++) {
+    for (let i = 0; i < scheduleDays; i++) {
       const date = new Date(startDate);
       date.setDate(startDate.getDate() + i);
       const pattern = weeklyPatterns[i % weeklyPatterns.length];
