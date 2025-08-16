@@ -26,7 +26,11 @@ document.addEventListener('DOMContentLoaded', () => {
       if (target === 'renpho') renderRenpho();
       if (target === 'sleep') renderSleep();
       if (target === 'summary') renderSummary();
+      if (target === 'meal-plan') renderMealPlan();
+     if (target === 'progress') renderProgress();
+      
     });
+          
   });
 
   // Request notification permission and schedule a daily reminder at 9AM local time.
@@ -159,6 +163,68 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   const fullSchedule = buildSchedule();
+const defaultIcon = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMAAAADACAIAAADdvvtQAAADqklEQVR4nO3dwW3jVhRAUdpIBbNMDa7BFWThirKYOlLGLFNTasjCA8XR0JSsS5Gf0DlLGTYf/78gLUgAn15e3ya41fPeA3BsAiIREImASAREIiASAZEIiERAJAIiERCJgEgERCIgEgGRCIhEQCQCIhEQiYBIBEQiIBIBkQiIREAkAiIREImASAREIiASAZEIiERAJAIiERCJgEgERCIgEgGRCIhEQCQCIvltrT/0z59/LPz02/cfax2IKy3vyLTSpjy9vL7d/MsXR5wlpvu5bUemsCm3BHTzlGeUtKJVNuWGHflaQGul85GMotU35Us78oWA7lHPOw3d5n47Ml29KVcFdNdBT2R0vW12ZLpiUy6/jd9s1s0OdHRbLtTFY10IaONN1dBF2y/R8hGXAtplOzW0YK/FWTjupwHtuJEamrXvsnx29PmAdt/C3QcYzQgLMjvDTEAjzDoNM8YIxlmKXyc5D2icWafBhtnLaItwNo9P40n+F9BosU9DjrSlMU//41TPs68OZdjB7m3kEz/N5hZG8jOgkWOfhh/vHsY/5fcJXYFIBETy9PL6Nv7V8t3jfN/jKDsyrfil+g0caFkfh1sYiYBInn7/+6+9Z+DAXIFIBEQiIBIBkQiIREAkAiIREImASJ4f5yNu7sEViERAJEf6PtDj3G0P9M2n5+kgG3OIIddylJP99v2HWxiJgEh+BjT4NXPw8e5h/FN+n9AViOS/gIZNftjB7m3kEz/N9jz76jgGHGlLY57+x6ncwkjOAxoq+aGG2ctoi3A2z8wVaJCJBxljBOMsxa+TzN/Cdp949wFGM8KCzM7w6f9AO048wmINaN9l+ezoS/9E7zKxehbstTgLx73wLmzjidVz0fZLtHzEy2/jN5tYPVfacqEuHssD5w7sMA+cO/HIywEd5pGXJx66O6BjPHT3jMd+j+YYj/2etTy6aLZ3MaZVNmW1gHhMPo0nERCJgEgERCIgEgGRCIhEQCQCIhEQiYBIBEQiIBIBkQiIREAkAiIREImASAREIiASAZEIiERAJAIiERCJgEgERCIgEgGRCIhEQCQCIhEQiYBIBEQiIBIBkQiIREAkAiIREImASAREIiASAZEIiERAJAIiERCJgEgERCIgEgGRCIhEQCQCIhEQiYBIBEQiIBIBkQiIREAkAiIREMm/wNzWNZZhLywAAAAASUVORK5CYII=';
+
+const exerciseDetails = {
+  "Bench Press": { description: "Compound exercise targeting chest, shoulders, and triceps. Lie on a bench and press the barbell upward and downward with control.", icon: defaultIcon },
+  "Incline Dumbbell Press": { description: "Targets upper chest and shoulders. Lie on an incline bench and press dumbbells upward.", icon: defaultIcon },
+  "Overhead Shoulder Press": { description: "Press dumbbells or barbell overhead from shoulder height, engaging deltoids and triceps.", icon: defaultIcon },
+  "Lateral Raises": { description: "Raise dumbbells out to the sides to shoulder height, targeting lateral deltoids.", icon: defaultIcon },
+  "Rope Pushdowns": { description: "Using a cable machine, extend your elbows downward while gripping a rope to focus on triceps.", icon: defaultIcon },
+  "Leg Press": { description: "Using a leg press machine, push the platform away with your feet; targets quads, glutes and hamstrings.", icon: defaultIcon },
+  "Bulgarian Split Squats": { description: "Lunge variation where the rear foot is elevated; strengthens quads and glutes.", icon: defaultIcon },
+  "Romanian Deadlift": { description: "Hip-hinge movement focusing on hamstrings and glutes; keep back flat and lower weights toward floor.", icon: defaultIcon },
+  "Lat Pulldown": { description: "Pull a lat pulldown bar down to chest while seated to train the lats and upper back.", icon: defaultIcon },
+  "Seated Cable Row": { description: "Pull cable handles toward your torso while seated; targets middle back muscles.", icon: defaultIcon },
+  "Face Pulls": { description: "Using a rope attachment at chest height, pull the rope toward your face keeping elbows high; works rear delts.", icon: defaultIcon },
+  "Dumbbell Curls": { description: "Curl dumbbells upward to train biceps.", icon: defaultIcon },
+  "Hammer Curls": { description: "Curl dumbbells with a neutral grip; targets the brachialis and forearms.", icon: defaultIcon },
+  "Hanging Knee Raises": { description: "Hang from a bar and lift knees toward chest; targets lower abs.", icon: defaultIcon },
+  "Ab Rollouts": { description: "Kneel with an ab wheel; roll forward until body is extended then roll back by contracting abs.", icon: defaultIcon },
+  "Cable Crunch": { description: "Kneel below a cable pulley with rope attachment; crunch down to engage upper abs.", icon: defaultIcon },
+  "Reverse Crunch": { description: "Lie on your back and lift hips off floor by bringing knees toward chest; works lower abs.", icon: defaultIcon },
+  "Calf isometric holds": { description: "Stand on both feet and hold a heel raise to strengthen the Achilles tendon.", icon: defaultIcon },
+  "Glute bridges": { description: "Lie on your back with knees bent; lift hips upward to activate glutes and lower back.", icon: defaultIcon },
+  "Bike HIIT": { description: "High-intensity intervals on a stationary bike alternating sprints with recovery.", icon: defaultIcon }
+};
+
+const mealRecipes = {
+  "Lean chili con carne": { instructions: "Brown lean minced beef in a pot. Add chopped onion, garlic, chili powder, cumin and paprika. Add canned tomatoes and mixed beans. Simmer for 20-30 minutes until flavours meld." },
+  "Chicken curry": { instructions: "Sauté onions, garlic and ginger. Add diced chicken and curry powder or paste and cook until browned. Add canned tomatoes and vegetables; simmer until chicken is cooked. Stir in yogurt or coconut milk to finish." },
+  "Tuna fishcakes": { instructions: "Boil and mash potatoes. Mix with drained canned tuna, sweetcorn and herbs. Form patties, coat with breadcrumbs and pan-fry until golden." },
+  "Stir-fry": { instructions: "Heat oil in a wok. Add sliced meat (chicken or beef) and cook until browned. Add mixed vegetables, soy sauce and seasonings. Stir continuously until vegetables are tender." },
+  "Protein oatmeal": { instructions: "Cook rolled oats with water or milk until creamy. Stir in a scoop of protein powder and top with fruit such as banana or berries." },
+  "Eggs with toast": { instructions: "Boil, scramble or fry eggs to your liking. Serve with wholegrain toast and optional vegetables." }
+};
+
+// Weekly meal plan with clickable recipe names
+const mealPlanData = [
+  { day: 'Monday', breakfast: 'Protein oatmeal', meal1: 'Lean chili con carne', meal2: 'Chicken curry' },
+  { day: 'Tuesday', breakfast: 'Eggs with toast', meal1: 'Chicken curry', meal2: 'Tuna fishcakes' },
+  { day: 'Wednesday', breakfast: 'Protein oatmeal', meal1: 'Lean chili con carne', meal2: 'Stir-fry' },
+  { day: 'Thursday', breakfast: 'Eggs with toast', meal1: 'Tuna fishcakes', meal2: 'Chicken curry' },
+  { day: 'Friday', breakfast: 'Protein oatmeal', meal1: 'Lean chili con carne', meal2: 'Stir-fry' },
+  { day: 'Saturday', breakfast: 'Eggs with toast', meal1: 'Stir-fry', meal2: 'Lean chili con carne' },
+  { day: 'Sunday', breakfast: 'Protein oatmeal', meal1: 'Tuna fishcakes', meal2: 'Lean chili con carne' }
+];
+
+const shoppingList = [
+  'Rolled oats (1 kg)',
+  'Eggs (12)',
+  'Chicken thighs or breast (1 kg)',
+  'Lean minced beef (500 g)',
+  'Canned tuna (4 tins)',
+  'Chopped tomatoes (2 tins)',
+  'Mixed beans (2 tins)',
+  'Sweetcorn (1 tin)',
+  'Frozen mixed vegetables (1 kg)',
+  'Brown rice (1 kg)',
+  'Greek yogurt (500 g)',
+  'Wholegrain bread (1 loaf)',
+  'Bananas and seasonal fruit',
+  'Onions, garlic and ginger',
+  'Chili powder, cumin, curry powder or paste'
+];
 
   // Utilities for localStorage logs
   function getLogs(type) {
@@ -521,6 +587,146 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       container.appendChild(table);
     }
+    function renderExerciseDetail(name) {
+  const detail = exerciseDetails[name] || {};
+  const container = document.getElementById('exercise-detail');
+  if (!container) return;
+  container.innerHTML = '';
+  const h2 = document.createElement('h2');
+  h2.textContent = name;
+  container.appendChild(h2);
+  if (detail.icon) {
+    const img = document.createElement('img');
+    img.src = detail.icon;
+    img.style.maxWidth = '100px';
+    img.style.marginBottom = '0.5rem';
+    container.appendChild(img);
+  }
+  const p = document.createElement('p');
+  p.textContent = detail.description || 'No description available.';
+  container.appendChild(p);
+}
+
+function renderMealDetail(name) {
+  const instructions = mealRecipes[name] || 'No instructions available.';
+  const container = document.getElementById('meal-detail');
+  if (!container) return;
+  container.innerHTML = '';
+  const h2 = document.createElement('h2');
+  h2.textContent = name;
+  container.appendChild(h2);
+  const p = document.createElement('p');
+  p.textContent = instructions;
+  container.appendChild(p);
+}
+
+function renderMealPlan() {
+  const container = document.getElementById('meal-plan');
+  container.innerHTML = '';
+  const title = document.createElement('h2');
+  title.textContent = 'Weekly Meal Plan & Recipes';
+  container.appendChild(title);
+  const table = document.createElement('table');
+  table.innerHTML = '<thead><tr><th>Day</th><th>Breakfast</th><th>Lunch</th><th>Dinner</th></tr></thead><tbody></tbody>';
+  const tbody = table.querySelector('tbody');
+  mealPlanData.forEach(day => {
+    const tr = document.createElement('tr');
+    const tdDay = document.createElement('td');
+    tdDay.textContent = day.day;
+    tr.appendChild(tdDay);
+    const tdB = document.createElement('td');
+    tdB.textContent = day.breakfast;
+    tr.appendChild(tdB);
+    const tdL = document.createElement('td');
+    tdL.textContent = day.meal1;
+    tdL.style.cursor = 'pointer';
+    tdL.style.textDecoration = 'underline';
+    tdL.onclick = () => { renderMealDetail(day.meal1); };
+    tr.appendChild(tdL);
+    const tdD = document.createElement('td');
+    tdD.textContent = day.meal2;
+    tdD.style.cursor = 'pointer';
+    tdD.style.textDecoration = 'underline';
+    tdD.onclick = () => { renderMealDetail(day.meal2); };
+    tr.appendChild(tdD);
+    tbody.appendChild(tr);
+  });
+  container.appendChild(table);
+  const listTitle = document.createElement('h3');
+  listTitle.textContent = 'Shopping List (Aldi & Tesco, approx. \u00a325)';
+  container.appendChild(listTitle);
+  const ul = document.createElement('ul');
+  shoppingList.forEach(item => {
+    const li = document.createElement('li');
+    li.textContent = item;
+    ul.appendChild(li);
+  });
+  container.appendChild(ul);
+  const detail = document.getElementById('meal-detail');
+  if (detail) detail.innerHTML = '';
+}
+
+function renderProgress() {
+  const container = document.getElementById('progress');
+  container.innerHTML = '';
+  const title = document.createElement('h2');
+  title.textContent = 'Progress Tracker';
+  container.appendChild(title);
+  const canvas = document.createElement('canvas');
+  canvas.width = 600;
+  canvas.height = 300;
+  container.appendChild(canvas);
+  const renphoLogs = getLogs('renphoLogs');
+  const dates = Object.keys(renphoLogs).sort();
+  const weightPoints = [];
+  const bfPoints = [];
+  dates.forEach(date => {
+    const entries = renphoLogs[date];
+    if (entries && entries.length > 0) {
+      weightPoints.push({ x: new Date(date), y: parseFloat(entries[0].weight) });
+      bfPoints.push({ x: new Date(date), y: parseFloat(entries[0].bodyFat) });
+    }
+  });
+  if (weightPoints.length < 2) {
+    const p = document.createElement('p');
+    p.textContent = 'Not enough data to display a graph. Add more Renpho entries.';
+    container.appendChild(p);
+    return;
+  }
+  const ctx = canvas.getContext('2d');
+  const minX = Math.min(...weightPoints.map(p => p.x.getTime()));
+  const maxX = Math.max(...weightPoints.map(p => p.x.getTime()));
+  const minY = Math.min(...weightPoints.map(p => p.y));
+  const maxY = Math.max(...weightPoints.map(p => p.y));
+  const rangeX = maxX - minX;
+  const rangeY = maxY - minY;
+  ctx.beginPath();
+  ctx.strokeStyle = '#2c3e50';
+  ctx.lineWidth = 2;
+  weightPoints.forEach((pt, idx) => {
+    const x = ((pt.x.getTime() - minX) / rangeX) * (canvas.width - 40) + 20;
+    const y = canvas.height - (((pt.y - minY) / rangeY) * (canvas.height - 40) + 20);
+    if (idx === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.strokeStyle = '#e74c3c';
+  ctx.lineWidth = 2;
+  bfPoints.forEach((pt, idx) => {
+    const x = ((pt.x.getTime() - minX) / rangeX) * (canvas.width - 40) + 20;
+    const y = canvas.height - (((pt.y - minY) / rangeY) * (canvas.height - 40) + 20);
+    if (idx === 0) ctx.moveTo(x, y);
+    else ctx.lineTo(x, y);
+  });
+  ctx.stroke();
+  ctx.fillStyle = '#333';
+  ctx.font = '12px Arial';
+  ctx.fillText('Weight (kg)', 5, 15);
+  ctx.fillStyle = '#e74c3c';
+  ctx.fillText('Body Fat %', 5, 30);
+}
+
   }
 
   // Summary tab rendering
